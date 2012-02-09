@@ -105,6 +105,7 @@ void PachubeClient::sendData(uint32_t feedId, char datastreamId[], double dataTo
     _client.print("/datastreams/");
     _client.print(datastreamId);
     _client.print(".csv HTTP/1.1\n");
+    _client.print("User-Agent: PachubeArduino/1.0\n");
     _client.print("Host: api.pachube.com\n");
 
     _client.print("X-PachubeApiKey: ");
