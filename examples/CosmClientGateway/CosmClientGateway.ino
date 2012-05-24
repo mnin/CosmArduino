@@ -1,6 +1,6 @@
 #include <SPI.h>
 #include <Ethernet.h>
-#include <Pachube.h>
+#include <Cosm.h>
 
 byte mac[] = {0x90, 0xA2, 0xDA, 0x00, 0x10, 0x8f};
 char apiKey[] = "YOUR_API_KEY";
@@ -11,7 +11,7 @@ IPAddress dnsServerIP(192,168,60,65); // Your DNS server IP - xxx,xxx,xxx,xxx
 IPAddress gatewayIP(192,168,60,65); // Your gateway IP
 IPAddress subnet(255,255,255,0);
 
-PachubeClient client = PachubeClient(apiKey);
+CosmClient client = CosmClient(apiKey);
 
 void setup()
 {
@@ -22,7 +22,7 @@ void loop()
 {
     // read the sensor
     int sensorReading = analogRead(A0);
-        
-    // send to the Pachube client
+
+    // send to the Cosm client
     client.updateFeed(feedId, datastreamId, sensorReading);
 }

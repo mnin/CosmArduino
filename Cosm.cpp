@@ -4,22 +4,22 @@ extern "C" {
 
 #include "Arduino.h"
 #include <Ethernet.h>
-#include "Pachube.h"
+#include "Cosm.h"
 
 char *_api;
 long _lastConnMillis = 0;
 bool lastConnected = false;
 const int _interval = 10000;
 EthernetClient _client;
-char *_host = "api.pachube.com";
+char *_host = "api.Cosm.com";
 const int _port = 80;
 
-PachubeClient::PachubeClient(char apiKey[])
+CosmClient::CosmClient(char apiKey[])
 {
   _api= apiKey;
 }
 
-bool PachubeClient::connectWithMac(byte macAddress[])
+bool CosmClient::connectWithMac(byte macAddress[])
 {
   Serial.begin(9600);
 
@@ -34,7 +34,7 @@ bool PachubeClient::connectWithMac(byte macAddress[])
   return true;
 }
 
-bool PachubeClient::connectWithIP(byte macAddress[], IPAddress localIP)
+bool CosmClient::connectWithIP(byte macAddress[], IPAddress localIP)
 {
   Serial.begin(9600);
 
@@ -49,7 +49,7 @@ bool PachubeClient::connectWithIP(byte macAddress[], IPAddress localIP)
   }
 }
 
-bool PachubeClient::connectViaGateway(byte macAddress[], IPAddress localIP, IPAddress dnsServerIP, IPAddress gatewayIP, IPAddress subnet)
+bool CosmClient::connectViaGateway(byte macAddress[], IPAddress localIP, IPAddress dnsServerIP, IPAddress gatewayIP, IPAddress subnet)
 {
   Serial.begin(9600);
 
@@ -64,7 +64,7 @@ bool PachubeClient::connectViaGateway(byte macAddress[], IPAddress localIP, IPAd
   }
 }
 
-void PachubeClient::updateFeed(uint32_t feedId, char datastreamId[], double dataToSend) {
+void CosmClient::updateFeed(uint32_t feedId, char datastreamId[], double dataToSend) {
   if (_client.available()) {
     char c = _client.read();
     Serial.print(c);
@@ -83,7 +83,7 @@ void PachubeClient::updateFeed(uint32_t feedId, char datastreamId[], double data
   lastConnected = _client.connected();
 }
 
-char * PachubeClient::getFeed(uint32_t feedId) {
+char * CosmClient::getFeed(uint32_t feedId) {
   int maxSize = 50;
   char response[maxSize];
 
@@ -95,20 +95,20 @@ char * PachubeClient::getFeed(uint32_t feedId) {
   }
 }
 
-void PachubeClient::sendData(uint32_t feedId, char datastreamId[], double dataToSend)
+void CosmClient::sendData(uint32_t feedId, char datastreamId[], double dataToSend)
 {
-  if (_client.connect("api.pachube.com", 80)) {
-    Serial.println("Connecting to Pachube...");
+  if (_client.connect("api.Cosm.com", 80)) {
+    Serial.println("Connecting to Cosm...");
 
     _client.print("PUT /v2/feeds/");
     _client.print(feedId);
     _client.print("/datastreams/");
     _client.print(datastreamId);
     _client.print(".csv HTTP/1.1\n");
-    _client.print("User-Agent: PachubeArduino/1.0\n");
-    _client.print("Host: api.pachube.com\n");
+    _client.print("User-Agent: CosmArduino/1.0\n");
+    _client.print("Host: api.Cosm.com\n");
 
-    _client.print("X-PachubeApiKey: ");
+    _client.print("X-CosmApiKey: ");
     _client.print(_api);
     _client.print("\n");
     _client.print("Content-Length: ");
@@ -123,10 +123,10 @@ void PachubeClient::sendData(uint32_t feedId, char datastreamId[], double dataTo
   }
 }
 
-int PachubeClient::getLength(double someValue) {
+int CosmClient::getLength(double someValue) {
   // max of 64 characters
   char buffer [64];
-  
+
   int length = sprintf(buffer, "%f.5", someValue);
 
   if (someValue < 0) {
@@ -137,8 +137,6 @@ int PachubeClient::getLength(double someValue) {
   return length+1;
 }
 
-void PachubeClient::readFromFeed()
+void CosmClient::readFromFeed()
 {
 }
-
-
