@@ -11,7 +11,7 @@ long _lastConnMillis = 0;
 bool lastConnected = false;
 const int _interval = 10000;
 EthernetClient _client;
-char *_host = "api.Cosm.com";
+char *_host = "api.cosm.com";
 const int _port = 80;
 
 CosmClient::CosmClient(char apiKey[])
@@ -106,9 +106,9 @@ void CosmClient::sendData(uint32_t feedId, char datastreamId[], double dataToSen
     _client.print(datastreamId);
     _client.print(".csv HTTP/1.1\n");
     _client.print("User-Agent: CosmArduino/1.0\n");
-    _client.print("Host: api.Cosm.com\n");
+    _client.print("Host: api.cosm.com\n");
 
-    _client.print("X-CosmApiKey: ");
+    _client.print("X-ApiKey: ");
     _client.print(_api);
     _client.print("\n");
     _client.print("Content-Length: ");
